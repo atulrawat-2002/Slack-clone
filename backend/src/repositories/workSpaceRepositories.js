@@ -1,5 +1,6 @@
 import User from "../schemas/user.js";
 import WorkSpace from "../schemas/workSpace.js"
+import channelRepository from "./channleRepository.js";
 import crudRepository from "./crudRepository.js"
 
 
@@ -56,11 +57,33 @@ const workSpaceRepositories = {
 
         await workSpace.save();
     },
-    addChannelToWorkSpace: async function() {
+    addChannelToWorkSpace: async function(workSpaceId, channelName) {
+        const workSpace = await WorkSpace.findById(workSpaceId).populate('channels');
+        if(!workSpace) {
+            throw new Error('Work space not found');
+        }
+
+        const isChannelAlreadyPresent = workSpace.channels.find(
+            (channel) => channel.name === channelName
+        )
+
+        if(isChannelAlreadyPresent) {
+            throw new Error('Channle already present in the work space');
+        }
+
+        const channel = await channelRepository.create({name: channelName});
+        workSpace.channels.push(channel);
+        await workSpace.save();
+
+        return workSpace;
 
     },
-    fetchAllWorkSpaceByMemberId: async function () {
+    fetchAllWorkSpaceByMemberId: async function (memberId) {
+        const workSpaces = await WorkSpace.find({
+            'members.memberId': memberId
+        }).populate('members.memberId', 'username, email, avatar')
 
+        return workSpaces;
     }
 }
 
