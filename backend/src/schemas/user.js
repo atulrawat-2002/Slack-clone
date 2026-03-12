@@ -43,7 +43,7 @@ userSchema.pre('save', async function saveUser(next) {
 })
 
 
-const User = mongoose.model('users', userSchema);
+const User = mongoose.model('User', userSchema);
 
 
 export default User;

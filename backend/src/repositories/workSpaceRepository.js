@@ -2,12 +2,12 @@ import User from "../schemas/user.js";
 import WorkSpace from "../schemas/workSpace.js"
 import channelRepository from "./channleRepository.js";
 import crudRepository from "./crudRepository.js"
+import Channel from "../schemas/channel.js";
 
-
-const workSpaceRepositories = {
+const workSpaceRepository = {
     ...crudRepository(WorkSpace),
     getWorkSpaceByName: async function(workSpaceName) {
-        const workSpace = WorkSpace.findOne({
+        const workSpace = await WorkSpace.findOne({
             name: workSpaceName
         });
 
@@ -19,7 +19,7 @@ const workSpaceRepositories = {
 
     },
     getWorkSpaceByJoinCode: async function(joinCode) {
-        const workSpace = WorkSpace.findOne({
+        const workSpace = await WorkSpace.findOne({
             joinCode: joinCode
         });
 
@@ -56,12 +56,15 @@ const workSpaceRepositories = {
         })
 
         await workSpace.save();
+        return workSpace.members;
     },
     addChannelToWorkSpace: async function(workSpaceId, channelName) {
+        
         const workSpace = await WorkSpace.findById(workSpaceId).populate('channels');
         if(!workSpace) {
             throw new Error('Work space not found');
         }
+        
 
         const isChannelAlreadyPresent = workSpace.channels.find(
             (channel) => channel.name === channelName
@@ -71,7 +74,7 @@ const workSpaceRepositories = {
             throw new Error('Channle already present in the work space');
         }
 
-        const channel = await channelRepository.create({name: channelName});
+        const channel = await channelRepository.create({name: channelName, workSpaceId: workSpaceId});
         workSpace.channels.push(channel);
         await workSpace.save();
 
@@ -81,11 +84,11 @@ const workSpaceRepositories = {
     fetchAllWorkSpaceByMemberId: async function (memberId) {
         const workSpaces = await WorkSpace.find({
             'members.memberId': memberId
-        }).populate('members.memberId', 'username, email, avatar')
+        }).populate('members.memberId', 'username email avatar')
 
         return workSpaces;
     }
 }
 
 
-export default workSpaceRepositories;
+export default workSpaceRepository;

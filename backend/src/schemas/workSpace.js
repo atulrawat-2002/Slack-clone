@@ -35,6 +35,6 @@ const workSpaceSchema = new Schema({
 })
 
 
-const WorkSpace = model('workSpace', workSpaceSchema)
+const WorkSpace = model('WorkSpace', workSpaceSchema)
 
 export default WorkSpace;

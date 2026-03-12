@@ -25,12 +25,12 @@ export const isAuthenticated = async (req, res, next) => {
         }
 
         const user = await userRepository.getById(result.id);
-        // res.userId = user._id;
-        console.log(user);
+        req.user = user.id;
+
         next();
 
     } catch (error) {
-        console.log('Auth middleware error', error);
+        console.log('Auth middleware error', error.message);
         if(error.name === 'jsonWebTokenError') {
              res.status(StatusCodes.FORBIDDEN).json(customErrorResponse({
                 message: 'Invalid token'

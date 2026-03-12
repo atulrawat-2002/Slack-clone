@@ -1,15 +1,20 @@
 import mongoose from 'mongoose';
 
-const channelScheman = new mongoose.Schema(
+const channelSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: [true, 'Channel name is required']
+    },
+    workSpaceId: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'WorkSpace',
+      required: [true, 'WorkSpace is required']
     }
   },
   { timestamps: true }
 );
 
-const Channel = mongoose.model('channel', channelScheman);
+const Channel = mongoose.model('Channel', channelSchema);
 
 export default Channel;

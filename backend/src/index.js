@@ -1,10 +1,8 @@
 import express from 'express';
 import morgan from "morgan";
-
 import { connectDB } from './configs/dbConfig.js';
 import { PORT } from './configs/serverConfigs.js';
 import apiRouter from './routes/apiRoutes.js'
-import { isAuthenticated } from './middlewares/authMiddleware.js';
 
 const app = express();
 app.use(express.json());
@@ -13,8 +11,6 @@ app.use(morgan("common"))
 
 
 app.use('/api', apiRouter);
-app.post('/testauth', isAuthenticated);
-
 
 
 app.listen(PORT, async () => {

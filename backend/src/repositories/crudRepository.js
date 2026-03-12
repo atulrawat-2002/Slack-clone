@@ -20,6 +20,14 @@ function crudRepository (schema) {
         update: async function (id, data) {
             const updatedDoc = await this.model.findByIdAndUpdate(id, data, {new: true});
             return updatedDoc
+        },
+        deleteMany: async function(modelIds) {
+        const response = await this.model.deleteMany({
+            _id: {
+                $in: modelIds
+            }
+        });
+        return response;
         }
     }
 }
