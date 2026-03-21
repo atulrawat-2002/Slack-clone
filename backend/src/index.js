@@ -28,7 +28,7 @@ io.on('connection', (socket) => {
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-app.use(morgan("common"))
+app.use(morgan("dev"))
 app.use(cors())
 
 
@@ -37,6 +37,12 @@ app.use('/api', apiRouter);
 
 
 server.listen(PORT, async () => {
-  connectDB()
-  console.log(`App is listening on ${PORT}`);
+  
+  try {
+    await connectDB()
+    console.log(`App is listening on ${PORT}`);
+  } catch (error) {
+    console.log(error)
+  }
+
 });

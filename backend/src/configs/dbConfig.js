@@ -19,7 +19,7 @@ export async function connectDB() {
         console.log(`Connected to database from ${NODE_ENV} environment`)
 
     } catch (error) {
-        console.log(error.message);
+        throw error;
     }
 
 }

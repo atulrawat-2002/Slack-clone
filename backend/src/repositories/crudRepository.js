@@ -18,7 +18,10 @@ function crudRepository (schema) {
             return response;
         },
         update: async function (id, data) {
-            const updatedDoc = await this.model.findByIdAndUpdate(id, data, {new: true});
+            const updatedDoc = await this.model.findByIdAndUpdate(id, data, {
+            returnDocument: 'after',
+            runValidators: true
+        });
             return updatedDoc
         },
         deleteMany: async function(modelIds) {

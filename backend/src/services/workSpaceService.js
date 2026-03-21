@@ -145,7 +145,7 @@ export const updatedWorkSpaceService = async (workSpaceId, workSpaceData, userId
       throw new Error('User is not admin to update the workspace')
    }
 
-   const updatedWorkSpace = await workSpaceRepository.update(workSpaceData);
+   const updatedWorkSpace = await workSpaceRepository.update(workSpaceId , workSpaceData);
    return updatedWorkSpace;
    } catch (error) {
       console.log('Error in update work space service', error.message);

@@ -80,9 +80,8 @@ export const getWorkSpaceByJoinCodeController = async (req, res) => {
 
 export const updatedWorkSpaceController = async (req, res) => {
     try { 
-        console.log(req.body)
         const response = updatedWorkSpaceService(
-        req.params.workSpaceId.
+        req.params.workSpaceId,
         req.body,
         req.user
     )
