@@ -17,7 +17,7 @@ export function isUserAdminOfWorkSpace(workSpace, userId) {
 
 export function isUserMemberOfWorkSpace( workSpace, userId) {
    const isMember = workSpace.members.find((member) => {
-      return (member.memberId.toString() === userId)
+      return (member.memberId.toString() === userId || member.memberId._id.toString() === userId)
     });
 
     return isMember;
@@ -91,7 +91,7 @@ export const getWorkSpaceService = async (workSpaceId, userId) => {
 
    try {
 
-      const workSpace = await workSpaceRepository.getById(workSpaceId);
+      const workSpace = await workSpaceRepository.getWorkspaceDetailsById(workSpaceId);
       if(!workSpace) {
          throw new Error('No work space found');
 
@@ -152,6 +152,19 @@ export const updatedWorkSpaceService = async (workSpaceId, workSpaceData, userId
       throw new Error(error)
    }
 }
+
+export const resetWorkspaceJoinCodeService = async (workspaceId, userId) => {
+   try {
+
+      const newJoinCode = uuid4().substring(0, 6).toUpperCase();
+      const updatedWorkSpace = await updatedWorkSpaceService(workspaceId, { joinCode: newJoinCode } , userId);
+      return updatedWorkSpace;
+
+   } catch (error) {
+      console.log('Error in reset workspace join code serviece', error.message) 
+      throw new Error(error) 
+   }
+}  
 
 export const addMemberToWorkSpaceService = async (workSpaceId, memberId, role, userId) => {
    try {

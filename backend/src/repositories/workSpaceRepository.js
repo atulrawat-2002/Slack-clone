@@ -6,6 +6,13 @@ import Channel from "../schemas/channel.js";
 
 const workSpaceRepository = {
     ...crudRepository(WorkSpace),
+    getWorkspaceDetailsById: async (workspaceId) => {
+        const workspace = await WorkSpace.findById(workspaceId)
+        .populate('members.memberId', 'username email avatar')
+        .populate('channels')
+
+        return workspace;
+    },
     getWorkSpaceByName: async function(workSpaceName) {
         const workSpace = await WorkSpace.findOne({
             name: workSpaceName
