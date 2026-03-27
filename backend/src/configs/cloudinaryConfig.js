@@ -1,4 +1,6 @@
+import { configDotenv } from 'dotenv';
 
+configDotenv()
 
 export const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME
 

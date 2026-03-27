@@ -13,7 +13,9 @@ import { verifyEmailController } from './controllers/workSpaceController.js';
 import cloudinary from "cloudinary";
 import { CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, CLOUDINARY_CLOUD_NAME } from './configs/cloudinaryConfig.js';
 import { dmSocketHandler } from './controllers/dmSocketHandler.js';
+import { configDotenv } from 'dotenv';
 
+configDotenv()
 
 cloudinary.config({
     cloud_name: CLOUDINARY_CLOUD_NAME,

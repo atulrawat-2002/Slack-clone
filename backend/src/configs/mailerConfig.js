@@ -1,4 +1,7 @@
 import nodemailer from "nodemailer";
+import { configDotenv } from 'dotenv';
+
+configDotenv()
 
 export default nodemailer.createTransport({
     service: 'Gmail',
