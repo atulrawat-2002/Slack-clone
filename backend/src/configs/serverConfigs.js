@@ -4,7 +4,7 @@ configDotenv()
 
 export const PORT = process.env.PORT;
 
-export const NODE_ENV = process.env.NODE_ENV || 'development';
+// export const NODE_ENV = process.env.NODE_ENV || 'development';
 
 export const DEV_DB_URL = process.env.DEV_DB_URL;
 
