@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import { customErrorResponse, successResponse } from "../utils/responseObjects.js";
-import { addChannelToWorkSpaceService, addMemberToWorkSpaceService, createWorkSpaceService, deleteWorkSpaceService, getAllWorkSpaceUserIsMemberOfService, getWorkSpaceByJoinCodeService, getWorkSpaceService, joinWorkspaceService, resetWorkspaceJoinCodeService, updatedWorkSpaceService } from "../services/workSpaceService.js";
+import { addChannelToWorkSpaceService, addMemberToWorkSpaceService, createWorkSpaceService, deleteWorkSpaceService, getAllExistingWorkspaces, getAllWorkSpaceUserIsMemberOfService, getWorkSpaceByJoinCodeService, getWorkSpaceService, joinWorkspaceService, resetWorkspaceJoinCodeService, updatedWorkSpaceService } from "../services/workSpaceService.js";
 import { verifyTokenService } from "../services/signupService.js";
 
 export const createWorkSpaceController = async (req, res) => {
@@ -138,6 +138,7 @@ export const resetWorkspaceJoinCodeController = async (req, res) => {
 }
 
 export const joinWorkspaceController = async (req, res) => {
+    console.log("join workspace controller", req?.params, req?.body)
     try {
         
         const response = await joinWorkspaceService( req.params.workSpaceId, req.body.joinCode, req.user );
@@ -159,6 +160,19 @@ export const verifyEmailController = async (req, res) => {
 
     } catch (error) {
         console.log('verify email controller error', error.message);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(customErrorResponse(error))
+    }
+}
+
+export const getAllExistingWorkspacesController = async (req, res) => {
+    try {
+        
+        const response = await getAllExistingWorkspaces();
+
+        return res.status(StatusCodes.OK).json(successResponse(response, 'fetched all workspaces successfully'));
+
+    } catch (error) {
+        console.log('get all existing workspaces controller error', error.message);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(customErrorResponse(error))
     }
 }

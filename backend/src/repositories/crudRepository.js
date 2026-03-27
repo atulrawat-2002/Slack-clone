@@ -3,12 +3,20 @@ function crudRepository (schema) {
         model: schema,
         create: async function (data) {
             const newDoc = await this.model.create(data);
-            const withSenderInfo = await newDoc.populate('senderId', 'username email avatar');
+            const withSenderInfo = await newDoc.populate({
+                path: 'senderId',
+                select: 'username email avatar',
+                strictPopulate: false, // <- prevents StrictPopulateError
+            });
             return withSenderInfo;
         },
         getAll: async function () {
-            const allDoc = await this.model.find();
-            return allDoc;
+            try {
+                const allDoc = await this.model.find({});
+                return allDoc;
+            } catch (error) {
+                console.log("error in get method of crud repository", error.message)
+            }
         },
         getById: async function (id) {
             const doc = await this.model.findById(id);

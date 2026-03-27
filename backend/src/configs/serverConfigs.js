@@ -19,3 +19,11 @@ export const MAIL_ADDRESS = process.env.MAIL_ADDRESS;
 export const APP_LINK = process.env.APP_LINK || 'http://localhost:8000';
 
 export const ENABLE_EMAIL_VARIFICATION = process.env.ENABLE_EMAIL_VARIFICATION || false;
+
+export const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID;
+
+export const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET;
+
+export const CURRENCY = process.env.CURRENCY;
+
+export const RECIEPT = process.env.RECIEPT;

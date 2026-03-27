@@ -12,6 +12,7 @@ import { channelSocketHandlers } from './controllers/channelSocketController.js'
 import { verifyEmailController } from './controllers/workSpaceController.js';
 import cloudinary from "cloudinary";
 import { CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, CLOUDINARY_CLOUD_NAME } from './configs/cloudinaryConfig.js';
+import { dmSocketHandler } from './controllers/dmSocketHandler.js';
 
 
 cloudinary.config({
@@ -32,7 +33,7 @@ const io = new Server(server, {
 io.on('connection', (socket) => {
   messageSocketHanlers(io, socket);
   channelSocketHandlers(io, socket);
-
+  dmSocketHandler(io, socket);
 })
 
 app.use(express.json());

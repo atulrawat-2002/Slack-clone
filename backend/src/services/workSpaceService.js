@@ -30,7 +30,8 @@ async function isChannelAlreadyPartOfWorkSpace(workSpace, channelName) {
 }
 
 export const createWorkSpaceService = async (workSpaceData) => {
-    const joinCode = uuid4().substring(0, 6).toUpperCase();
+    try {
+      const joinCode = uuid4().substring(0, 6).toUpperCase();
 
     const response = await workSpaceRepository.create({ 
         name: workSpaceData.name,
@@ -50,6 +51,10 @@ export const createWorkSpaceService = async (workSpaceData) => {
      )
 
      return updatedWorkSpace;
+    } catch (error) {
+      console.log('Error in create space service', error.message);
+      throw new Error(error);
+   }
 
 }
 
@@ -250,6 +255,11 @@ export const joinWorkspaceService = async (workspaceId, joinCode, userId ) => {
          throw new Error('Invalid Join code');
       }
 
+      const isAlreadMember = isUserMemberOfWorkSpace(workSpace, userId);
+
+      if(isAlreadMember) {
+         throw new Error('User Already part of workspace');
+      }
 
       const updatedWorkSpace = await workSpaceRepository.addMemberToWorkSpace(workspaceId, userId, 'member');
 
@@ -258,5 +268,16 @@ export const joinWorkspaceService = async (workspaceId, joinCode, userId ) => {
    } catch (error) {
        console.log('Error in Join workspace service', error.message);
        throw new Error(error);
+   }
+}
+
+export const getAllExistingWorkspaces = async () => {
+   try {
+      
+      const workspaces = await workSpaceRepository.getAll();
+      return workspaces;
+
+   } catch (error) {
+      console.log('Error in get all existing workspace service', error.message)
    }
 }
