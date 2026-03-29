@@ -49,9 +49,13 @@ app.use('/api', apiRouter);
 app.get('/verify/:token', verifyEmailController);
 
 app.get('/ping', async (req, res) => {
-  res.status(200).json({
+  try {
+    res.status(200).json({
     message: "Ok from slack's backend"
   })
+  } catch (error) {
+    console.log('Error in getting ping request from connections', error.message);
+  }
 })
 
 await connectDB()
