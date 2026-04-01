@@ -3,7 +3,6 @@ import { addChannelToWorkSpaceController, addMemberToWorkSpaceController, create
 import {createWorkSpaceSchema, addChannelToWorkSpaceSchema, addMemberToWorkSpaceScehma } from '../../validators/workSpaceSchema.js';
 import { validate } from '../../validators/zodValidator.js';
 import { isAuthenticated } from '../../middlewares/authMiddleware.js';
-import { is } from 'zod/v4/locales';
 
 const router = express.Router();
 

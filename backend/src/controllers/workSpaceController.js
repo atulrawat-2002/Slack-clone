@@ -4,6 +4,7 @@ import { addChannelToWorkSpaceService, addMemberToWorkSpaceService, createWorkSp
 import { verifyTokenService } from "../services/signupService.js";
 
 export const createWorkSpaceController = async (req, res) => {
+    console.log("Request to createWorkspace controller")
     try {
         const response = await createWorkSpaceService({
             ...req.body,
@@ -13,7 +14,7 @@ export const createWorkSpaceController = async (req, res) => {
             successResponse(response, 'Work space created successfully')
         )
     } catch (error) {
-        console.log(error);
+        console.log("Error in createworkspace controller", error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(customErrorResponse(error));
     }
 }

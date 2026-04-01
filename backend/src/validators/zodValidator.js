@@ -11,7 +11,7 @@ export const validate = (schema) => {
 
         } catch (error) {
             let obj = JSON.parse(error.message)
-
+            console.log('Error in the validation of request', error.message);
             res.status(StatusCodes.BAD_REQUEST).json(customErrorResponse({message: obj[0].message}))
         }
     }
