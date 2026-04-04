@@ -71,7 +71,7 @@ setInterval(async () => {
   } catch (error) {
     console.log("Error in ping bot interval", error.message);
   }
-}, 5000);
+}, 1000 * 60 * 10);
 
 app.get('/ping', async (req, res) => {
   try {
