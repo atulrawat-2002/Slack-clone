@@ -32,10 +32,17 @@ const io = new Server(server, {
   }
 });
 
+const dmNamespace = io.of('/dm');
+
+dmNamespace.on("connection", (socket) => {
+  dmSocketHandler(dmNamespace, socket);
+  console.log('DM connection established', socket.id);
+})
+
 io.on('connection', (socket) => {
+  console.log('channel connection established', socket.id);
   messageSocketHanlers(io, socket);
   channelSocketHandlers(io, socket);
-  dmSocketHandler(io, socket);
 })
 
 app.use(express.json());
@@ -47,6 +54,24 @@ app.use(cors())
 app.use('/ui', bullServerAdapter.getRouter());
 app.use('/api', apiRouter);
 app.get('/verify/:token', verifyEmailController);
+
+async function pingBot() {
+  try {
+    const response = await fetch("https://mdqs-backend.onrender.com/ping");
+    const data = await response.json();
+    console.log("Response from bot", data);
+  } catch (error) {
+    console.log("Error in ping bot", error.message)
+  }
+}
+
+setInterval(async () => {
+  try {
+    await pingBot()
+  } catch (error) {
+    console.log("Error in ping bot interval", error.message);
+  }
+}, 5000);
 
 app.get('/ping', async (req, res) => {
   try {
