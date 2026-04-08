@@ -2,13 +2,24 @@ function crudRepository (schema) {
     return {
         model: schema,
         create: async function (data) {
-            const newDoc = await this.model.create(data);
-            const withSenderInfo = await newDoc.populate({
+            try {
+                const newDoc = await this.model.create(data);
+                const withSenderInfo = await newDoc.populate([
+                    {
                 path: 'senderId',
                 select: 'username email avatar',
                 strictPopulate: false, // <- prevents StrictPopulateError
-            });
+            },
+            {
+                path: 'recieverId',
+                select: 'username avatar email',
+                strictPopulate: false
+            }
+        ]);
             return withSenderInfo;
+            } catch (error) {
+                console.log('Error in create of repository', error.message);
+            }
         },
         getAll: async function () {
             try {

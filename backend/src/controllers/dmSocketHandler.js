@@ -1,5 +1,6 @@
 import uuid4 from "uuid4";
 import Conversation from "../schemas/conversation.js";
+import { createDmService } from "../services/dmService.js"; // ✅ import service not repository
 
 export const dmSocketHandler = async (io, socket) => {
 
@@ -7,49 +8,37 @@ export const dmSocketHandler = async (io, socket) => {
         const { senderId, recieverId } = data;
         let roomId = null;
         let conversation = await Conversation.findOne({
-                                        participants: { $all: [senderId, recieverId] }
-                                    });
-        if(conversation) {
+            participants: { $all: [senderId, recieverId] }
+        });
+
+        if (conversation) {
             roomId = conversation.id;
             await socket.join(roomId);
-            const sockets = await io.in(roomId).fetchSockets();
-            console.log("conversation found and socket joined to this roomid", conversation.id);
-            console.log("Sockets in room:", sockets.map(s => s.id));
             cb?.(conversation);
-        }else {
+        } else {
             roomId = uuid4();
-            console.log('creating conversation and socket joined to this room id', roomId);
             conversation = await Conversation.create({
                 id: roomId,
-                participants: [
-                    senderId,
-                    recieverId
-                ]
+                participants: [senderId, recieverId]
             });
             await socket.join(roomId);
-            const sockets = await io.in(roomId).fetchSockets();
-            console.log("Sockets in room:", sockets.map(s => s.id));
-            console.log(conversation)
             cb?.(conversation);
         }
-
-    })  
+    });
 
     socket.on("sendDm", async function getNewDmHandler(data, cb) {
-
-        console.log("new dm recieved",data);
+        console.log("new dm received", data);
         const { conversationId } = data;
 
-        const sockets = await io.in(conversationId).fetchSockets();
-        console.log("Sockets in room:", sockets.map(s => s.id));
+        // ✅ Bug 1 fixed — was calling dmRepository.create directly
+        const messageResponse = await createDmService(data);
 
-        io.to(conversationId).emit("newDm", data);  
+        io.to(conversationId).emit("newDm", messageResponse);
 
         cb?.({
             success: true,
-            message: 'Successfully received DM'
-        })
-
-    })
-
-}
+            message: 'Successfully received DM',
+            response: messageResponse
+        });
+    });
+};

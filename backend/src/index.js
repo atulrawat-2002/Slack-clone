@@ -40,7 +40,7 @@ dmNamespace.on("connection", (socket) => {
 })
 
 io.on('connection', (socket) => {
-  console.log('channel connection established', socket.id);
+  console.log('********* channel connection established ***********', socket.id);
   messageSocketHanlers(io, socket);
   channelSocketHandlers(io, socket);
 })
@@ -79,7 +79,7 @@ app.get('/ping', async (req, res) => {
     message: "Ok from slack's backend"
   })
   } catch (error) {
-    console.log('Error in getting ping request from connections', error.message);
+    console.log('Error in getting ping request from bot', error.message);
   }
 })
 

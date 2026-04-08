@@ -2,7 +2,7 @@ import mongoose, { model, Schema } from "mongoose";
 
 const dmSchema = new Schema({
     conversationId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       ref: 'Conversation',
       required: true
     },
@@ -11,12 +11,12 @@ const dmSchema = new Schema({
         required: true,
         trim: true
     },
-    sender: {
+    senderId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'User'
     },
-    reciever: {
+    recieverId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'User'
