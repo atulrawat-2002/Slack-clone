@@ -40,7 +40,6 @@ dmNamespace.on("connection", (socket) => {
 })
 
 io.on('connection', (socket) => {
-  console.log('********* channel connection established ***********', socket.id);
   messageSocketHanlers(io, socket);
   channelSocketHandlers(io, socket);
 })

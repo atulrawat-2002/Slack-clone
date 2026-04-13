@@ -18,7 +18,6 @@ const userRepository = {
       _v,
       ...returnable
     } = newUser.toObject();
-    console.log(returnable);
     return {
       ...returnable,
       token: createJWT({id: returnable._id, email: returnable.email})

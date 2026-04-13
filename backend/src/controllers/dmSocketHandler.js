@@ -27,7 +27,6 @@ export const dmSocketHandler = async (io, socket) => {
     });
 
     socket.on("sendDm", async function getNewDmHandler(data, cb) {
-        console.log("new dm received", data);
         const { conversationId } = data;
 
         // ✅ Bug 1 fixed — was calling dmRepository.create directly

@@ -223,7 +223,6 @@ export const addChannelToWorkSpaceService = async (workSpaceId, channelName, use
       const iaAlreadyPresent = await isChannelAlreadyPartOfWorkSpace(workSpace, channelName);
 
       if(iaAlreadyPresent) {
-         console.log('channel already present');
          throw new Error('channel already present')
       }
 

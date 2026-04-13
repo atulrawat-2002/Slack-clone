@@ -36,7 +36,6 @@ export const getPaginatedDmsController = async (req, res) => {
         req.user
     )
 
-    console.log(response)
 
     return res.status(StatusCodes.OK).json(successResponse(response, 'Fetched dms successfully'));
 

@@ -4,7 +4,6 @@ import { addChannelToWorkSpaceService, addMemberToWorkSpaceService, createWorkSp
 import { verifyTokenService } from "../services/signupService.js";
 
 export const createWorkSpaceController = async (req, res) => {
-    console.log("Request to createWorkspace controller")
     try {
         const response = await createWorkSpaceService({
             ...req.body,
@@ -139,7 +138,6 @@ export const resetWorkspaceJoinCodeController = async (req, res) => {
 }
 
 export const joinWorkspaceController = async (req, res) => {
-    console.log("join workspace controller", req?.params, req?.body)
     try {
         
         const response = await joinWorkspaceService( req.params.workSpaceId, req.body.joinCode, req.user );
